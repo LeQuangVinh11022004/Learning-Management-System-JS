@@ -1,0 +1,4 @@
+node_modules/
+.env
+/docs/architecture.md
+/docs/100-day-improvement-roadmap.md
