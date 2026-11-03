@@ -36,9 +36,12 @@ const errorHandler = (err, req, res, next) => {
   const response = {
     code: statusCode,
     message,
+    ...(req.id && { requestId: req.id }),
     ...(config.ENV === 'development' && err.stack && { stack: err.stack }),
   };
-  logger.error(err.stack || err.message || err);
+  logger.error(
+    `[request:${req.id || 'unknown'}] ${err.stack || err.message || err}`
+  );
 
   return res.status(statusCode).json(response);
 };

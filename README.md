@@ -18,8 +18,14 @@ Feature modules will be added in later batches.
 2. Copy `.env.example` to `.env` and set the local MongoDB URL and JWT secret.
 3. Run `npm run dev`.
 
-The server connects to MongoDB before accepting requests. `GET /health` returns
-`200` when the database is connected and `503` otherwise.
+The server connects to MongoDB before accepting requests. `GET /health/live`
+checks that the process is running. `GET /health/ready` checks MongoDB
+connectivity; the existing `GET /health` endpoint remains as a compatibility
+alias. Readiness returns `200` when MongoDB is connected and `503` otherwise.
+Each request receives an `X-Request-Id` response header. Use this identifier to
+correlate access logs with error responses.
+Set `CORS_ORIGINS` to a comma-separated list of allowed browser origins when
+deploying; local development origins are used when it is unset.
 
 Run the current tests with `npm test`.
 

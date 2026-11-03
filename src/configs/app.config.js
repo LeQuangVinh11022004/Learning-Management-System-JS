@@ -1,9 +1,23 @@
 module.exports = {
   ENV: process.env.NODE_ENV || 'development',
   PORT: process.env.PORT || 3200,
+  SHUTDOWN_TIMEOUT_MS: Number(process.env.SHUTDOWN_TIMEOUT_MS || 10000),
   MongoDB_URL_DEV: process.env.MONGODB_URL_DEV,
   MongoDB_URL_MAIN: process.env.MONGODB_URL_MAIN,
   CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:5173',
+  CORS_ORIGINS: process.env.CORS_ORIGINS
+    ? Array.from(
+        new Set(
+          process.env.CORS_ORIGINS.split(',')
+            .map((origin) => origin.trim())
+            .filter(Boolean)
+        )
+      )
+    : [
+        process.env.CLIENT_URL || 'http://localhost:5173',
+        'http://localhost:3000',
+        'http://localhost:3200',
+      ],
   email: {
     name: 'hello',
     host: process.env.EMAIL_HOST ?? 'sandbox.smtp.mailtrap.io',
