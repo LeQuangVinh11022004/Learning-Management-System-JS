@@ -1,11 +1,13 @@
 require('dotenv').config();
 
 const config = require('./configs/app.config');
+const validateConfig = require('./configs/validate.config');
 const logger = require('./configs/logger.config');
 const db = require('./configs/db.config');
 const closeServer = require('./utils/closeServer');
 
 const startServer = async () => {
+  validateConfig(config);
   await db.connect();
 
   const createApp = require('./app');

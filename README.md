@@ -18,6 +18,10 @@ Feature modules will be added in later batches.
 2. Copy `.env.example` to `.env` and set the local MongoDB URL and JWT secret.
 3. Run `npm run dev`.
 
+The application validates the port, shutdown timeout and active environment's
+MongoDB URL before connecting or opening the HTTP listener. Invalid settings
+are reported together at startup.
+
 The server connects to MongoDB before accepting requests. `GET /health/live`
 checks that the process is running. `GET /health/ready` checks MongoDB
 connectivity; the existing `GET /health` endpoint remains as a compatibility

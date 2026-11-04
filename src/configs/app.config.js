@@ -1,6 +1,6 @@
 module.exports = {
   ENV: process.env.NODE_ENV || 'development',
-  PORT: process.env.PORT || 3200,
+  PORT: Number(process.env.PORT || 3200),
   SHUTDOWN_TIMEOUT_MS: Number(process.env.SHUTDOWN_TIMEOUT_MS || 10000),
   MongoDB_URL_DEV: process.env.MONGODB_URL_DEV,
   MongoDB_URL_MAIN: process.env.MONGODB_URL_MAIN,
