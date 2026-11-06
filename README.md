@@ -29,7 +29,9 @@ alias. Readiness returns `200` when MongoDB is connected and `503` otherwise.
 Each request receives an `X-Request-Id` response header. Use this identifier to
 correlate access logs with error responses.
 Set `CORS_ORIGINS` to a comma-separated list of allowed browser origins when
-deploying; local development origins are used when it is unset.
+deploying; local development origins are used when it is unset. Startup
+validation requires each configured value to be an HTTP(S) origin without a
+path.
 
 Run the current tests with `npm test`.
 

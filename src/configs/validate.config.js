@@ -22,6 +22,28 @@ const validateConfig = (config) => {
     );
   }
 
+  if (!Array.isArray(config.CORS_ORIGINS) || config.CORS_ORIGINS.length === 0) {
+    errors.push('CORS_ORIGINS must contain at least one allowed origin');
+  } else {
+    config.CORS_ORIGINS.forEach((origin, index) => {
+      try {
+        const parsedOrigin = new URL(origin);
+        if (
+          !['http:', 'https:'].includes(parsedOrigin.protocol) ||
+          parsedOrigin.origin !== origin
+        ) {
+          errors.push(
+            `CORS_ORIGINS[${index}] must be an HTTP(S) origin without a path`
+          );
+        }
+      } catch {
+        errors.push(
+          `CORS_ORIGINS[${index}] must be an HTTP(S) origin without a path`
+        );
+      }
+    });
+  }
+
   if (errors.length > 0) {
     throw new Error(`Invalid application configuration: ${errors.join('; ')}`);
   }
