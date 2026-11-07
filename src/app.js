@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 const config = require('./configs/app.config');
 const { errorConverter, errorHandler } = require('./middlewares/error.middleware');
 const requestId = require('./middlewares/requestId.middleware');
+const createRateLimiter = require('./middlewares/rateLimit.middleware');
 const APIError = require('./utils/APIError');
 
 const createApp = () => {
@@ -30,6 +31,12 @@ const createApp = () => {
   app.use(cors(corsOptions));
   app.options('*', cors(corsOptions));
   app.use(morgan(':request-id :method :url :status :response-time ms'));
+  app.use(
+    createRateLimiter({
+      windowMs: config.RATE_LIMIT_WINDOW_MS,
+      maxRequests: config.RATE_LIMIT_MAX_REQUESTS,
+    })
+  );
 
   app.get('/health/live', (req, res) => {
     return res.status(200).json({ status: 'alive' });

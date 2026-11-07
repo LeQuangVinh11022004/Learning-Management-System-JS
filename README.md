@@ -32,6 +32,10 @@ Set `CORS_ORIGINS` to a comma-separated list of allowed browser origins when
 deploying; local development origins are used when it is unset. Startup
 validation requires each configured value to be an HTTP(S) origin without a
 path.
+Non-health requests are rate limited per client IP. Configure the window with
+`RATE_LIMIT_WINDOW_MS` and the request cap with `RATE_LIMIT_MAX_REQUESTS`.
+The default in-memory store is process-local; multi-instance deployments should
+use a shared rate-limit store.
 
 Run the current tests with `npm test`.
 

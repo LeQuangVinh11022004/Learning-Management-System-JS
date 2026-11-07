@@ -16,6 +16,20 @@ const validateConfig = (config) => {
     errors.push('SHUTDOWN_TIMEOUT_MS must be a positive integer');
   }
 
+  if (
+    !Number.isSafeInteger(config.RATE_LIMIT_WINDOW_MS) ||
+    config.RATE_LIMIT_WINDOW_MS <= 0
+  ) {
+    errors.push('RATE_LIMIT_WINDOW_MS must be a positive integer');
+  }
+
+  if (
+    !Number.isSafeInteger(config.RATE_LIMIT_MAX_REQUESTS) ||
+    config.RATE_LIMIT_MAX_REQUESTS <= 0
+  ) {
+    errors.push('RATE_LIMIT_MAX_REQUESTS must be a positive integer');
+  }
+
   if (typeof databaseUrl !== 'string' || databaseUrl.trim().length === 0) {
     errors.push(
       `Missing database URL for ${config.ENV} environment`

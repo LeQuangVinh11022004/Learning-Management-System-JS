@@ -6,6 +6,8 @@ const validConfig = {
   ENV: 'development',
   PORT: 3200,
   SHUTDOWN_TIMEOUT_MS: 10000,
+  RATE_LIMIT_WINDOW_MS: 900000,
+  RATE_LIMIT_MAX_REQUESTS: 100,
   MongoDB_URL_DEV: 'mongodb://127.0.0.1:27017/lms',
   MongoDB_URL_MAIN: 'mongodb://127.0.0.1:27017/lms-production',
   CORS_ORIGINS: ['http://localhost:5173', 'https://lms.example'],
@@ -33,6 +35,17 @@ test('rejects non-positive shutdown timeouts', () => {
   assert.throws(
     () => validateConfig({ ...validConfig, SHUTDOWN_TIMEOUT_MS: 0 }),
     /SHUTDOWN_TIMEOUT_MS must be a positive integer/
+  );
+});
+
+test('rejects invalid rate-limit windows and request limits', () => {
+  assert.throws(
+    () => validateConfig({ ...validConfig, RATE_LIMIT_WINDOW_MS: 0 }),
+    /RATE_LIMIT_WINDOW_MS must be a positive integer/
+  );
+  assert.throws(
+    () => validateConfig({ ...validConfig, RATE_LIMIT_MAX_REQUESTS: -1 }),
+    /RATE_LIMIT_MAX_REQUESTS must be a positive integer/
   );
 });
 
@@ -88,12 +101,16 @@ test('reports multiple configuration errors together', () => {
         ...validConfig,
         PORT: -1,
         SHUTDOWN_TIMEOUT_MS: -1,
+        RATE_LIMIT_WINDOW_MS: 0,
+        RATE_LIMIT_MAX_REQUESTS: 0,
         MongoDB_URL_DEV: undefined,
         CORS_ORIGINS: ['https://example.com/path'],
       }),
     (error) => {
       assert.match(error.message, /PORT must be an integer/);
       assert.match(error.message, /SHUTDOWN_TIMEOUT_MS must be a positive integer/);
+      assert.match(error.message, /RATE_LIMIT_WINDOW_MS must be a positive integer/);
+      assert.match(error.message, /RATE_LIMIT_MAX_REQUESTS must be a positive integer/);
       assert.match(error.message, /Missing database URL/);
       assert.match(error.message, /CORS_ORIGINS\[0\]/);
       return true;

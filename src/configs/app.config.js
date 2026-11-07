@@ -2,6 +2,8 @@ module.exports = {
   ENV: process.env.NODE_ENV || 'development',
   PORT: Number(process.env.PORT || 3200),
   SHUTDOWN_TIMEOUT_MS: Number(process.env.SHUTDOWN_TIMEOUT_MS || 10000),
+  RATE_LIMIT_WINDOW_MS: Number(process.env.RATE_LIMIT_WINDOW_MS || 900000),
+  RATE_LIMIT_MAX_REQUESTS: Number(process.env.RATE_LIMIT_MAX_REQUESTS || 100),
   MongoDB_URL_DEV: process.env.MONGODB_URL_DEV,
   MongoDB_URL_MAIN: process.env.MONGODB_URL_MAIN,
   CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:5173',
